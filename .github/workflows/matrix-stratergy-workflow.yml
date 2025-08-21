@@ -1,0 +1,21 @@
+name: Matrix Docker Hello
+
+on:
+  workflow_dispatch:
+
+jobs:
+  run-docker-hello:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        docker-image: [hello-world, alpine, busybox] # Multiple images
+        platform: [linux/amd64, linux/arm64]        # Multiple platforms
+    steps:
+      - name: Show matrix details
+        run: |
+          echo "Running with image: ${{ matrix.docker-image }}"
+          echo "Platform: ${{ matrix.platform }}"
+
+      - name: Run Docker Hello
+        run: |
+          docker run --platform ${{ matrix.platform }} ${{ matrix.docker-image }}
