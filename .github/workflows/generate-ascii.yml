@@ -23,7 +23,7 @@ jobs:
 
             - name: Run Shell Script
               run: | 
-                chmod +X ascii-gen.sh
+                chmod +x ascii-gen.sh
                 ./ascii-gen.sh
 
             - name: List files
