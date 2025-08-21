@@ -1,0 +1,24 @@
+name: Env variable 
+
+on:
+    push
+env: 
+    CONTAINER_REGISTRY: docker.io
+    DOCKER_USERNAME: yashdevpl
+    IMAGE_NAME: github-actions-nginx
+ 
+jobs:
+ docker:
+    runs-on: ubuntu-latest
+    steps:
+        - name: Docker Build
+          run : echo docker build -t ${{env.CONTAINER_REGISTRY}}
+        - name: Docker Login
+          env:
+            DOCKER_PASSWORD: 123456789
+          run: echo docker login --username=$DOCKER_USERNAME --password=$DOCKER_PASSWORD
+
+        - name: Docker publish
+          run: echo docker push ${{env.CONTAINER_REGISTRY}}/${{env.DOCKER_USERNAME}}/${{env.IMAGE_NAME}}:latest
+ 
+
