@@ -15,8 +15,8 @@ jobs:
           run : echo docker build -t ${{env.CONTAINER_REGISTRY}}
         - name: Docker Login
           env:
-            DOCKER_PASSWORD: 123456789
-          run: echo docker login --username=$DOCKER_USERNAME --password=$DOCKER_PASSWORD
+            PASSWORD: sdkfdssdfsfl
+          run: echo docker login --username=$DOCKER_USERNAME --password=${{secrets.DOCKER_PASSWORD}} --password=${{env.PASSWORD}}
 
         - name: Docker publish
           run: echo docker push ${{env.CONTAINER_REGISTRY}}/${{env.DOCKER_USERNAME}}/${{env.IMAGE_NAME}}:latest
