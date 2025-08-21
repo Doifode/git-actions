@@ -1,0 +1,27 @@
+name: Manual Dispatch Example
+
+on:
+  workflow_dispatch:
+    inputs:
+      name:
+        description: 'Your name'
+        required: true
+        default: 'Yash'
+      environment:
+        description: 'Select environment'
+        required: true
+        default: 'development'
+        type: choice
+        options:
+          - development
+          - staging
+          - production
+
+jobs:
+  say-hello:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print greeting
+        run: |
+          echo "Hello, ${{ github.event.inputs.name }}!"
+          echo "Deploying to ${{ github.event.inputs.environment }} environment."
