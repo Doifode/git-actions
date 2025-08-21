@@ -1,0 +1,20 @@
+name: Timeout Example
+
+on:
+  workflow_dispatch:
+
+jobs:
+  long-running-job:
+    runs-on: ubuntu-latest
+    timeout-minutes: 1  # Job will be killed if it exceeds 5 minutes
+    steps:
+      - name: Start Task
+        run: echo "Starting a long-running process"
+
+      - name: Simulate Long Task
+        run: |
+          echo "Sleeping for 10 minutes..."
+          sleep 600  # This is 10 minutes, but job will timeout at 5 minutes
+
+      - name: Finish Task
+        run: echo "Task completed"  # This will never run if timeout occurs
