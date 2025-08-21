@@ -16,7 +16,9 @@ on:
           - development
           - staging
           - production
-
+concurrency:
+  group: "my-deploy-${{ github.ref }}"  # Unique per branch
+  cancel-in-progress: true              # Cancel previous runs in this group
 jobs:
   say-hello:
     runs-on: ubuntu-latest
