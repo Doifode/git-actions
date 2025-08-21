@@ -1,4 +1,25 @@
-name: Matrix Docker Hello
+# name: Matrix Docker Hello
+
+# on:
+#   workflow_dispatch:
+
+# jobs:
+#   run-docker-hello:
+#     runs-on: ubuntu-latest
+#     strategy:
+#       matrix:
+#         docker-image: [hello-world, alpine, busybox] # Multiple images
+#         platform: [linux/amd64, linux/arm64]        # Multiple platforms
+#     steps:
+#       - name: Show matrix details
+#         run: |
+#           echo "Running with image: ${{ matrix.docker-image }}"
+#           echo "Platform: ${{ matrix.platform }}"
+
+#       - name: Run Docker Hello
+#         run: |
+#           docker run --platform ${{ matrix.platform }} ${{ matrix.docker-image }}
+name: Matrix Docker Hello with Include & Exclude
 
 on:
   workflow_dispatch:
@@ -8,14 +29,33 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        docker-image: [hello-world, alpine, busybox] # Multiple images
-        platform: [linux/amd64, linux/arm64]        # Multiple platforms
+        docker-image: [hello-world, alpine, busybox]
+        platform: [linux/amd64, linux/arm64]
+
+        # Exclude combinations that won't work
+        exclude:
+          - docker-image: hello-world
+            platform: linux/arm64  # hello-world doesn't support arm64
+
+        # Add custom combinations
+        include:
+          - docker-image: alpine
+            platform: linux/arm64
+            custom: "extra-test"  # custom variable for additional logic
+
     steps:
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
       - name: Show matrix details
         run: |
-          echo "Running with image: ${{ matrix.docker-image }}"
+          echo "Image: ${{ matrix.docker-image }}"
           echo "Platform: ${{ matrix.platform }}"
+          echo "Custom: ${{ matrix.custom || 'none' }}"
 
       - name: Run Docker Hello
         run: |
-          docker run --platform ${{ matrix.platform }} ${{ matrix.docker-image }}
+          docker run --rm --platform ${{ matrix.platform }} ${{ matrix.docker-image }}
