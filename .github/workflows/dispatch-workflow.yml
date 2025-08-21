@@ -25,3 +25,4 @@ jobs:
         run: |
           echo "Hello, ${{ github.event.inputs.name }}!"
           echo "Deploying to ${{ github.event.inputs.environment }} environment."
+          echo "Deploying to ${{ github.event.repository.name }} environment."
