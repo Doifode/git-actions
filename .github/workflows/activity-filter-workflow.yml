@@ -1,0 +1,24 @@
+name: Filter and Activities
+
+on:
+  push:
+    branches:
+      - main
+      - ci
+      - 'feature/*'   # Matches feature branches
+      - '!hotfix/*'
+
+  pull_request:
+      types:
+          - opened
+          - closed
+      paths-ignore: 
+          - README.md
+    
+
+jobs:
+  branch-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Show Branch
+        run: echo "Branch is ${{ github.ref_name }}"
