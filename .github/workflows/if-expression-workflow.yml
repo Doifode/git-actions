@@ -1,0 +1,24 @@
+name: If Expression Based on Branch
+
+on:
+  push:
+    branches:
+      - main
+      - ci
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Always run
+        run: echo "Branch is ${{ github.ref_name }}"
+
+      - name: Run only on main
+        if: ${{ github.ref == 'refs/heads/main' }}
+        run: echo "Deploying to PRODUCTION (main branch)"
+
+      - name: Run only on ci
+        if: ${{ github.ref == 'refs/heads/ci' }}
+        run: echo "Deploying to DEV (CI branch)"
+
+
